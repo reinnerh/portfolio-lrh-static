@@ -159,22 +159,26 @@
       }
     },
     {
-      "id": "platform-deployment-script",
-      "title": "Script de Deploy Completo (PHP 8.1 + Apache + Redis)",
-      "short": "Automação completa de deploy da plataforma com PHP 8.1, Apache, Redis sessions e configurações de produção.",
-      "tags": ["Bash", "PHP", "Apache", "Redis", "Deployment", "Linux"],
-      "repo": "https://github.com/leonardo-reinner/platform-deployment",
+      "id": "lifecycle-hook-terraform",
+      "title": "Lifecycle Hook + Lambda para Coleta de Logs de Emergência (Terraform)",
+      "short": "Infraestrutura completa que captura logs críticos antes da terminação de instâncias EC2 via ASG Lifecycle Hooks.",
+      "tags": ["Terraform", "Lifecycle Hooks", "Lambda", "SNS", "S3", "Emergency Logs"],
+      "repo": "https://github.com/leonardo-reinner/lifecycle-hook-emergency-logs",
       "terminal_demo": {
         "prompt": "$",
         "commands": [
-          "chmod +x Plataforma.sh",
-          "./Plataforma.sh",
-          "systemctl status apache2 php8.1-fpm redis"
+          "terraform init",
+          "terraform plan -var='asg_name=production-asg'",
+          "terraform apply -auto-approve",
+          "# Simular terminação de instância",
+          "aws autoscaling terminate-instance-in-auto-scaling-group --instance-id i-1234567890abcdef0 --should-decrement-desired-capacity"
         ],
         "outputs": [
-          "Script executável configurado",
-          "✅ PHP 8.1 instalado ✅ Apache configurado ✅ Redis sessions ativo",
-          "● apache2.service - loaded (active) ● php8.1-fpm.service - loaded (active)"
+          "Terraform has been successfully initialized!",
+          "Plan: 8 to add, 0 to change, 0 to destroy.",
+          "Apply complete! Resources: 8 added, 0 changed, 0 destroyed.",
+          "",
+          "✅ Lifecycle Hook ativado - Coletando logs de emergência...\n📦 Logs salvos em S3: emergency-logs-abc12345/i-1234567890abcdef0/"
         ]
       }
     }
