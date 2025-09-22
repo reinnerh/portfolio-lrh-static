@@ -133,22 +133,28 @@
       }
     },
     {
-      "id": "iam-roles-terraform",
-      "title": "IAM Roles para Auto Scaling com Terraform",
-      "short": "Roles IAM específicas para agentes (SQS send) e gerentes (SQS receive + ASG scaling) em arquitetura distribuída.",
-      "tags": ["Terraform", "IAM", "SQS", "Auto Scaling", "Security"],
-      "repo": "https://github.com/leonardo-reinner/iam-asg-roles",
+      "id": "asg-gerente-agente-system",
+      "title": "Sistema Auto Scaling Gerente/Agente (SQS + Systemd)",
+      "short": "Arquitetura distribuída onde agentes monitoram CPU e enviam para SQS, gerente recebe e escala ASG automaticamente.",
+      "tags": ["Auto Scaling", "SQS", "Systemd", "Python", "Monitoring", "Distributed"],
+      "repo": "https://github.com/leonardo-reinner/asg-gerente-agente",
       "terminal_demo": {
         "prompt": "$",
         "commands": [
-          "terraform validate",
-          "terraform plan -out=iam-plan",
-          "terraform apply iam-plan"
+          "# Setup Gerente (instância dedicada)",
+          "chmod +x setup_gerente.sh && ./setup_gerente.sh",
+          "systemctl status asg_gerente.service",
+          "# Setup Agentes (instâncias do ASG)",
+          "chmod +x setup_agente.sh && ./setup_agente.sh",
+          "tail -f /var/log/cpu_check.log"
         ],
         "outputs": [
-          "Success! The configuration is valid.",
-          "Plan: 6 to add, 0 to change, 0 to destroy.",
-          "Apply complete! Resources: 6 added, 0 changed, 0 destroyed."
+          "",
+          "✅ Serviço asg_gerente.service criado e iniciado",
+          "● asg_gerente.service - ASG Gerente Monitor de CPU (active)",
+          "",
+          "✅ Serviço asg_agente.service criado e iniciado",
+          "[2024-09-22 16:45:12] CPU: 87.2% > 85% - Enviando para SQS\n[2024-09-22 16:45:22] CPU: 91.5% > 85% - Enviando para SQS"
         ]
       }
     },
