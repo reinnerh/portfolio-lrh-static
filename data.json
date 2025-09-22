@@ -1,0 +1,176 @@
+{
+  "name": "Leonardo Reinner Hubsch",
+  "title": "Analista de Infra & Cloud",
+  "subtitle": "AWS · Linux · Automação",
+  "bio": "Especialista em infraestrutura como código, automação de deploys e observabilidade na AWS. Foco em soluções escaláveis e cost-effective.",
+  "email": "leonardohubsch@gmail.com",
+  "github": "https://github.com/reinnerh",
+  "linkedin": "https://www.linkedin.com/in/leonardohubsch/",
+  "whatsapp": "https://wa.me/5541998673262",
+  "hobbies": [
+    {
+      "name": "Música",
+      "description": "Toco gaita, flauta irlandesa e ukulele",
+      "icon": "🎵",
+      "activities": ["Gaita", "Flauta Irlandesa", "Ukulele"]
+    },
+    {
+      "name": "Séries",
+      "description": "Adoro uma boa série para relaxar",
+      "icon": "📺",
+      "activities": ["Drama", "Ficção Científica", "Documentários"]
+    },
+    {
+      "name": "Ciclismo",
+      "description": "Pedalar é minha terapia",
+      "icon": "🚴‍♂️",
+      "activities": ["Mountain Bike", "Trilhas", "Passeios Urbanos"]
+    },
+    {
+      "name": "Gaming",
+      "description": "Jogos no PC para desestressar",
+      "icon": "🎮",
+      "activities": ["Strategy", "RPG", "Indie Games"]
+    }
+  ],
+  "skills": [
+    {"name": "AWS", "level": 90, "icon": "☁️"},
+    {"name": "Terraform", "level": 85, "icon": "🏗️"},
+    {"name": "Linux", "level": 88, "icon": "🐧"},
+    {"name": "Docker", "level": 80, "icon": "🐳"},
+    {"name": "Chalice", "level": 75, "icon": "🐍"},
+    {"name": "Grafana", "level": 82, "icon": "📊"},
+    {"name": "MySQL/Aurora", "level": 78, "icon": "🗄️"},
+    {"name": "CI/CD", "level": 85, "icon": "🔄"},
+    {"name": "Python", "level": 80, "icon": "🐍"}
+  ],
+  "areas": [
+    {"title": "Infra como Código", "description": "VPC, ASG, ALB, RDS, ECS/EKS", "icon": "🏗️"},
+    {"title": "Cloud Ops", "description": "AWS SA-East-1, custos e automações", "icon": "☁️"},
+    {"title": "Automação", "description": "Chalice, Lambda, GitHub Actions", "icon": "⚙️"},
+    {"title": "Segurança", "description": "IAM, Secrets Manager, backups cifrados", "icon": "🔒"},
+    {"title": "Performance", "description": "Observability e tuning (Aurora, PHP-FPM)", "icon": "🚀"}
+  ],
+  "projects": [
+    {
+      "id": "emergency-logs-lambda",
+      "title": "Sistema de Coleta de Logs de Emergência (Lambda + Lifecycle Hooks)",
+      "short": "Lambda que coleta logs críticos antes da terminação de instâncias EC2 via ASG Lifecycle Hooks.",
+      "tags": ["AWS Lambda", "Auto Scaling", "Lifecycle Hooks", "Python", "SSM"],
+      "repo": "https://github.com/leonardo-reinner/emergency-log-collector",
+      "terminal_demo": {
+        "prompt": "$",
+        "commands": [
+          "terraform apply -var='asg_name=production-asg'",
+          "aws lambda invoke --function-name emergency-log-collector response.json",
+          "cat response.json | jq .statusCode"
+        ],
+        "outputs": [
+          "Apply complete! Resources: 8 added, 0 changed, 0 destroyed.",
+          "StatusCode: 200",
+          "200"
+        ]
+      }
+    },
+    {
+      "id": "php-fpm-monitor",
+      "title": "Monitor PHP-FPM com SSM e Auto Scaling",
+      "short": "Script Python que monitora configurações PHP-FPM, detecta gargalos e sugere otimizações via SSM.",
+      "tags": ["Python", "SSM", "PHP-FPM", "Performance", "Monitoring"],
+      "repo": "https://github.com/leonardo-reinner/php-fpm-monitor",
+      "terminal_demo": {
+        "prompt": "$",
+        "commands": [
+          "python3 monitor_php_fpm.py",
+          "grep 'CRÍTICO' php_fpm_monitor_*/php_fpm_*.txt",
+          "aws ssm send-command --document-name 'AWS-RunShellScript' --targets 'Key=tag:Environment,Values=production'"
+        ],
+        "outputs": [
+          "✅ Monitoramento PHP-FPM de i-0123456789abcdef0 salvo",
+          "🔴 CRÍTICO: Usando mais de 90% da capacidade!",
+          "Command sent successfully: 12345678-1234-1234-1234-123456789012"
+        ]
+      }
+    },
+    {
+      "id": "cloudwatch-uptime-dashboard",
+      "title": "Dashboard de Uptime com CloudWatch (Terraform)",
+      "short": "Dashboard automatizado que calcula disponibilidade da plataforma baseado em ALB HealthyHostCount.",
+      "tags": ["Terraform", "CloudWatch", "Monitoring", "SLA", "ALB"],
+      "repo": "https://github.com/leonardo-reinner/cloudwatch-uptime-dashboard",
+      "terminal_demo": {
+        "prompt": "$",
+        "commands": [
+          "terraform init",
+          "terraform plan -var='alb_name=production-alb'",
+          "terraform apply -auto-approve"
+        ],
+        "outputs": [
+          "Terraform has been successfully initialized!",
+          "Plan: 1 to add, 0 to change, 0 to destroy.",
+          "Apply complete! Dashboard URL: https://console.aws.amazon.com/cloudwatch/home#dashboards:name=infra-monitor-dashboard"
+        ]
+      }
+    },
+    {
+      "id": "asg-smart-scaling",
+      "title": "Auto Scaling Inteligente com Troca de Launch Template",
+      "short": "Sistema que alterna entre instâncias pequenas/grandes baseado em horários e métricas de CPU.",
+      "tags": ["Python", "Auto Scaling", "Launch Templates", "Cost Optimization"],
+      "repo": "https://github.com/leonardo-reinner/asg-smart-scaling",
+      "terminal_demo": {
+        "prompt": "$",
+        "commands": [
+          "python3 austoscallingtemplate.py grande",
+          "aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names production-asg",
+          "python3 scalling_ec2.py"
+        ],
+        "outputs": [
+          "Instance Refresh iniciado com ID: 12345678-1234-1234-1234-123456789012",
+          "DesiredCapacity: 3, LaunchTemplate: production-template:$Latest",
+          "[Mon Aug 18 14:30:15 2024] CPU: 75.20% - Escalando..."
+        ]
+      }
+    },
+    {
+      "id": "iam-roles-terraform",
+      "title": "IAM Roles para Auto Scaling com Terraform",
+      "short": "Roles IAM específicas para agentes (SQS send) e gerentes (SQS receive + ASG scaling) em arquitetura distribuída.",
+      "tags": ["Terraform", "IAM", "SQS", "Auto Scaling", "Security"],
+      "repo": "https://github.com/leonardo-reinner/iam-asg-roles",
+      "terminal_demo": {
+        "prompt": "$",
+        "commands": [
+          "terraform validate",
+          "terraform plan -out=iam-plan",
+          "terraform apply iam-plan"
+        ],
+        "outputs": [
+          "Success! The configuration is valid.",
+          "Plan: 6 to add, 0 to change, 0 to destroy.",
+          "Apply complete! Resources: 6 added, 0 changed, 0 destroyed."
+        ]
+      }
+    },
+    {
+      "id": "platform-deployment-script",
+      "title": "Script de Deploy Completo (PHP 8.1 + Apache + Redis)",
+      "short": "Automação completa de deploy da plataforma com PHP 8.1, Apache, Redis sessions e configurações de produção.",
+      "tags": ["Bash", "PHP", "Apache", "Redis", "Deployment", "Linux"],
+      "repo": "https://github.com/leonardo-reinner/platform-deployment",
+      "terminal_demo": {
+        "prompt": "$",
+        "commands": [
+          "chmod +x Plataforma.sh",
+          "./Plataforma.sh",
+          "systemctl status apache2 php8.1-fpm redis"
+        ],
+        "outputs": [
+          "Script executável configurado",
+          "✅ PHP 8.1 instalado ✅ Apache configurado ✅ Redis sessions ativo",
+          "● apache2.service - loaded (active) ● php8.1-fpm.service - loaded (active)"
+        ]
+      }
+    }
+  ]
+}

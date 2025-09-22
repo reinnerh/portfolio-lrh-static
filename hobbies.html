@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hobbies - Leonardo Reinner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-950 text-gray-900 dark:text-white font-sans">
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/80 dark:bg-gray-950/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
+        <div class="max-w-6xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="font-semibold text-lg">Leonardo Reinner</div>
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="text-sm hover:text-blue-600 transition-colors">Home</a>
+                    <a href="index.html#projetos" class="text-sm hover:text-blue-600 transition-colors">Projetos</a>
+                    <a href="index.html#contato" class="text-sm hover:text-blue-600 transition-colors">Contato</a>
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <i data-lucide="sun" class="w-4 h-4 dark:hidden"></i>
+                        <i data-lucide="moon" class="w-4 h-4 hidden dark:block"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="py-12 text-center">
+        <div class="max-w-4xl mx-auto px-4">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Meus Hobbies</h1>
+            <p class="text-lg text-gray-600 dark:text-gray-300">Quando não estou mexendo com infra, gosto de...</p>
+        </div>
+    </section>
+
+    <!-- Hobbies Grid -->
+    <section class="py-8">
+        <div class="max-w-4xl mx-auto px-4">
+            <div id="hobbies-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </div>
+    </section>
+
+    <script>
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to 'light'
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.classList.toggle('dark', currentTheme === 'dark');
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            const newTheme = html.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Load and display hobbies
+        async function loadHobbies() {
+            try {
+                const response = await fetch('data.json');
+                const data = await response.json();
+                
+                const container = document.getElementById('hobbies-container');
+                
+                data.hobbies.forEach(hobby => {
+                    const hobbyCard = document.createElement('div');
+                    hobbyCard.className = 'bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-6 hover:shadow-lg transition-shadow';
+                    
+                    hobbyCard.innerHTML = `
+                        <div class="flex items-start gap-4">
+                            <div class="text-4xl">${hobby.icon}</div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">${hobby.name}</h3>
+                                <p class="text-gray-600 dark:text-gray-400 mb-4">${hobby.description}</p>
+                                <div class="flex flex-wrap gap-2">
+                                    ${hobby.activities.map(activity => 
+                                        `<span class="px-2 py-1 text-xs rounded bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">${activity}</span>`
+                                    ).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.appendChild(hobbyCard);
+                });
+                
+                // Initialize Lucide icons
+                lucide.createIcons();
+                
+            } catch (error) {
+                console.error('Erro ao carregar hobbies:', error);
+            }
+        }
+
+        // Load hobbies when page loads
+        document.addEventListener('DOMContentLoaded', loadHobbies);
+    </script>
+</body>
+</html>
