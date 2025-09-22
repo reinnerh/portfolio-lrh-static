@@ -46,7 +46,7 @@
   ],
   "areas": [
     {"title": "Infra como Código", "description": "VPC, ASG, ALB, RDS, ECS/EKS", "icon": "🏗️"},
-    {"title": "Cloud Ops", "description": "AWS SA-East-1, custos e automações", "icon": "☁️"},
+    {"title": "Cloud Ops", "description": "AWS, custos e automações", "icon": "☁️"},
     {"title": "Automação", "description": "Chalice, Lambda, GitHub Actions", "icon": "⚙️"},
     {"title": "Segurança", "description": "IAM, Secrets Manager, backups cifrados", "icon": "🔒"},
     {"title": "Performance", "description": "Observability e tuning (Aurora, PHP-FPM)", "icon": "🚀"}
