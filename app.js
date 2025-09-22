@@ -166,32 +166,44 @@ async function runTerminalDemo(projectId) {
     if (!project || !project.terminal_demo) return;
     
     const terminal = document.getElementById(`terminal-${projectId}`);
+    const button = document.querySelector(`button[onclick="runTerminalDemo('${projectId}')"]`);
     const demo = project.terminal_demo;
+    
+    // Desabilitar botão durante execução
+    button.disabled = true;
+    button.innerHTML = '<i data-lucide="loader-2" class="w-3 h-3 animate-spin"></i> Executando';
     
     terminal.innerHTML = '';
     
-    for (let i = 0; i < demo.commands.length; i++) {
-        const command = demo.commands[i];
-        const output = demo.outputs[i];
-        
-        // Type command
-        const commandLine = `${demo.prompt} ${command}`;
-        let currentText = '';
-        
-        for (const char of commandLine) {
-            currentText += char;
-            terminal.innerHTML = currentText + '<span class="animate-pulse">_</span>';
-            await sleep(80);
+    try {
+        for (let i = 0; i < demo.commands.length; i++) {
+            const command = demo.commands[i];
+            const output = demo.outputs[i];
+            
+            // Type command
+            const commandLine = `${demo.prompt} ${command}`;
+            let currentText = '';
+            
+            for (const char of commandLine) {
+                currentText += char;
+                terminal.innerHTML = currentText + '<span class="animate-pulse">_</span>';
+                await sleep(80);
+            }
+            
+            terminal.innerHTML = currentText + '\n';
+            await sleep(800);
+            
+            // Show output
+            if (output) {
+                terminal.innerHTML += output + '\n';
+                await sleep(1500);
+            }
         }
-        
-        terminal.innerHTML = currentText + '\n';
-        await sleep(800);
-        
-        // Show output
-        if (output) {
-            terminal.innerHTML += output + '\n';
-            await sleep(1500);
-        }
+    } finally {
+        // Reabilitar botão
+        button.disabled = false;
+        button.innerHTML = '<i data-lucide="play" class="w-3 h-3"></i> Reproduzir';
+        lucide.createIcons();
     }
 }
 
